@@ -14,10 +14,7 @@
             "cwd": "${workspaceFolder}", 
             "environment": [], 
             "externalConsole": false, 
-            "MIMode": "lldb", 
-            "osx": { 
-                "MIDebuggerPath": "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-mi" 
-            } 
+            "MIMode": "lldb"
         } 
     ]
 }
