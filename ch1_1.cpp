@@ -10,6 +10,7 @@
 
 const double pi = 3.141592;
 
+
 int main()
 {
     std::cout << "The answer to the Ultimate Question of Life, \n"
@@ -45,6 +46,7 @@ int main()
 
     std::cout << u2 << std::endl;
             //   << u2n << std::endl;
+
 
     // unsigned ut = {3};
     // int it = {2};
