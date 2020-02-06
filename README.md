@@ -53,6 +53,7 @@ Mac의 VSC에서 cpp 실행을 위해선 Command + Shift + b 를 눌러 g++ buil
 }
 
 이후 .vscode 파일 아래에 launch.json 파일 생성 후 다음 코드를 삽입
+
 {
     // IntelliSense를 사용하여 가능한 특성에 대해 알아보세요.
     // 기존 특성에 대한 설명을 보려면 가리킵니다.
