@@ -10,6 +10,7 @@
         "args": [
             "-g",
             "-o",
+            "-std=c++11",   // C++ 11 compile option
             "${fileDirname}/${fileBasenameNoExtension}.out",
             "${file}"
         ],
@@ -24,6 +25,7 @@
         "command": "/usr/bin/g++",
         "args": [
             "-g",
+            "-std=c++11",   // C++ 11 compile option
             "${file}",
             "-o",
             "${fileDirname}/${fileBasenameNoExtension}"

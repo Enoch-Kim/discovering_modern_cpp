@@ -78,6 +78,6 @@ Mac의 VSC에서 cpp 실행을 위해선 Command + Shift + b 를 눌러 g++ buil
         ]
     }
 
-이후 Command + Shift + b 를 눌러 g++ build 후 exec
+이후 Command + Shift + b 를 눌러 g++ build 후 exec (gcc는 비추...)
 
 # discovering_modern_cpp

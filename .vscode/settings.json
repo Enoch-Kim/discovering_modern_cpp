@@ -63,6 +63,10 @@
         "iomanip": "cpp",
         "deque": "cpp",
         "fstream": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "code-runner.runInTerminal": true,
+        "code-runner.executorMap": {
+            "cpp": "cd $dir && g++ -std=c++11 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        },
     }
 }
