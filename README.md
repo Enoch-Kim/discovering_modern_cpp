@@ -10,6 +10,23 @@ Mac의 VSC에서 cpp 실행을 위해선 Command + Shift + b 를 눌러 g++ buil
         // for the documentation about the tasks.json format 
         "version": "2.0.0", 
         "tasks": [ 
+            {
+                "label": "Build with Clang",
+                "type": "shell",
+                "command": "clang++",
+                "args": [
+                "-std=c++17",
+                "-stdlib=libc++",
+                "${file}"
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out",
+                "--debug"
+                ],
+                "group": {
+                "kind": "build",
+                "isDefault": true
+                }
+            },
             { 
                 "label": "build_gcc", 
                 "type": "shell", 
@@ -79,5 +96,9 @@ Mac의 VSC에서 cpp 실행을 위해선 Command + Shift + b 를 눌러 g++ buil
     }
 
 이후 Command + Shift + b 를 눌러 g++ build 후 exec (gcc는 비추...)
+
+이렇게 작업을 했지만... C++11이 작동 안되는 부분이 있어 Clang을 도입하기로 했다.
+https://code.visualstudio.com/docs/cpp/config-clang-mac 이 Visual Studio Code Docs를 보고... 도전...
+
 
 # discovering_modern_cpp

@@ -4,40 +4,57 @@
    "version": "2.0.0", 
    "tasks": [
     {
-        "label": "build_g++",
+        "label": "Build with Clang",
         "type": "shell",
-        "command": "g++",
+        "command": "clang++",
         "args": [
-            "-g",
-            "-o",
-            "-std=c++11",   // C++ 11 compile option
-            "${fileDirname}/${fileBasenameNoExtension}.out",
-            "${file}"
+          "-std=c++17",
+          "-stdlib=libc++",
+          "${file}"
+          "-o",
+          "${fileDirname}/${fileBasenameNoExtension}.out",
+          "--debug"
         ],
         "group": {
-            "kind": "build",
-            "isDefault": true
+          "kind": "build",
+          "isDefault": true
         }
     },
-    {
-        "type": "shell",
-        "label": "g++ build active file",
-        "command": "/usr/bin/g++",
-        "args": [
-            "-g",
-            "-std=c++11",   // C++ 11 compile option
-            "${file}",
-            "-o",
-            "${fileDirname}/${fileBasenameNoExtension}"
-        ],
-        "options": {
-            "cwd": "/usr/bin"
-        },
-        "problemMatcher": [
-            "$gcc"
-        ],
-        "group": "build"
-    },
+    // {
+    //     "label": "build_g++",
+    //     "type": "shell",
+    //     "command": "g++",
+    //     "args": [
+    //         "-g",
+    //         "-o",
+    //         "-std=c++11",   // C++ 11 compile option
+    //         "${fileDirname}/${fileBasenameNoExtension}.out",
+    //         "${file}"
+    //     ],
+    //     "group": {
+    //         "kind": "build",
+    //         "isDefault": true
+    //     }
+    // },
+    // {
+    //     "type": "shell",
+    //     "label": "g++ build active file",
+    //     "command": "/usr/bin/g++",
+    //     "args": [
+    //         "-g",
+    //         "-std=c++11",   // C++ 11 compile option
+    //         "${file}",
+    //         "-o",
+    //         "${fileDirname}/${fileBasenameNoExtension}"
+    //     ],
+    //     "options": {
+    //         "cwd": "/usr/bin"
+    //     },
+    //     "problemMatcher": [
+    //         "$gcc"
+    //     ],
+    //     "group": "build"
+    // },
     {
         "label": "exec",
         "type": "shell",
