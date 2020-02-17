@@ -169,6 +169,7 @@ int main() {
         
         double *x = new double[3], *y = new double[3], *sum = new double[3];
         std::cout << "x is " << x << "\n"
+        
                   << "*x is " << *x << std::endl;
         for(unsigned i = 0; i < 3; ++i){
             x[i] = i + 2, y[i] = 4.2 * i;
