@@ -102,5 +102,3 @@ https://code.visualstudio.com/docs/cpp/config-clang-mac 이 Visual Studio Code D
 
 git에 yuhyeon으로 등록되는 것을 수정해보자. => git config를 수정해 해결했다
 
-
-# discovering_modern_cpp
