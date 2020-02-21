@@ -100,5 +100,6 @@ Mac의 VSC에서 cpp 실행을 위해선 Command + Shift + b 를 눌러 g++ buil
 이렇게 작업을 했지만... C++11이 작동 안되는 부분이 있어 Clang을 도입하기로 했다.
 https://code.visualstudio.com/docs/cpp/config-clang-mac 이 Visual Studio Code Docs를 보고... 도전...
 
+git에 yuhyeon으로 등록되는 것을 수정해보자.
 
 # discovering_modern_cpp
