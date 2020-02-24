@@ -1,5 +1,5 @@
 /*
-    20-02-21 Enoch Kim
+    20-02-21, 20-02-24 Enoch Kim
     cpp 교재 <모던 C++입문> 3강
     3.2
     마소의 Docs 참고 https://docs.microsoft.com/ko-kr/cpp/cpp/namespaces-cpp?view=vs-2019
@@ -217,7 +217,235 @@ namespace ContosoData
     {
         int MyFunc(){}
     }
+
+
 */
+
+/*
+    네임스페이스가 블록과 다른 점은 네임스페이스_한정(Namespace Qualification)으로 이름을 계속 참조할 수 있다는 것이다.
+    struct same{};
+    namespace c1{
+        struct same{};
+        namespace c2{
+            struct same{};
+            sturct csame{
+                ::same x;      //same of global
+                c1::same y;    //same of c1
+                same z;        //same of c2
+            }
+        }
+    }
+
+    만약 c2안에 c1을 다시 선언하면 바깥쪽 c1네임스페이스는 숨겨지고, y의 타입을 정의할 수 없다.
+    처음의 c1의 same을 참조하기 위해서는 전역 네임스페이스 부분을 명시하거나 using으로 명시한다.
+    struct same{};
+    namespace c1{
+        struct same{};
+        namespace c2{
+            struct same{};
+            namespace c1{};
+            sturct csame{
+                ::same x;      //same of global
+                c1::same y;    //   error occure => c1::c2::c1::same is not defined
+                same z;        //same of c2
+                ::c1::same y;  //same of c1(specify)
+            }
+        }
+    }
+
+    using에 관하여는 MicroSoft의 설명이 더 좋다
+    using의 경우 네임스페이스와 함수에서 동작하지만 클래스에서는 선언을 사용하는 다른 클래스와 충돌하므로 동작하지 않는다(클래스 스코프에서는 동작하지 않는다)
+    
+*/
+
+/*
+    Argument-Dependent Lookup, ADL 인수 종속 룩업
+    함수이름의 검색을 인수 네임스페이스로 확장하는 것을 인수 종속 룩업이라고 한다.
+    주의할 점은 부모의 네임스페이스로 확장하지는 않는다는 것이다.
+    ...
+    namespace rocketscience{
+        struct matrix{};
+        void initialize(matrix& A) {...}
+        matrix operator+(const matrix& A, const matrix& B){
+            matrix C;
+            initialize(C);
+            add(A, B, C);
+            return C;
+        }
+    }
+
+    int main () {
+        rocketscience::matrix A, B, C, D;
+        rocketscience::initialize(B); //한정함
+        initialize(C);                //ADL 의존
+        chez_herbert::matrix E, F, G;
+        rocketscience::initialize(E); // 한정 필요
+        initialize(C);                // Error : can not find initialize
+    }
+
+    ADL이 없으면 다음의 식도 복잡해진다.
+    A = B + C + D;
+    => A = rocketscience::operator+(rocketscience::operator+(B,C),D);
+
+    I/O stream을 처리하는 문장은 훨씬 추악하고 성가시게 된다.
+    사용자 코드가 네임스페이스 std::에 없어야 하므로 operator<<는 클래스의 네임스코프에서 정의하는게 좋다. 그럼으로써 ADL은 각 타입별로 적절한 오버로드를 찾을 수 있다.
+
+    ADL메커니즘은 여러 네임스페이스에 분산되어 있는 경우 올바른 함수 템플릿 오버로드를 선택하는 데 사용할 수도 있다. 
+    선형 대수의 L1법선은 행렬과 벡터에 모두 정의되므로 두 타입 모두 사용할 수 있는 템플릿 구현을 제공하려고 한다.
+    template<typename Matrix>
+    double one_norm(const Matrix& A){...}
+    template<typename Vector>
+    double one_norm(const Vector& x){...}
+    문제는 컴파일러가 우리가 원하는 오버로드를 알 수 없다는 것이다.
+    컴파일러가 알기 위해서는 행렬 네임스페이스와 벡터 네임스페이스를 도입해 ADL로 올바른 오버로드를 사용하게 해야한다.
+    namespace rocketscience{
+        namespace mat{
+            struct sparse_matrix{};
+            struct dense_matrix{};
+            struct uber_matirx{};
+            template<typename matrix>
+            double one_norm(const Matrix& A){...}
+        }
+        namespace vec{
+            struct sparse_vector{};
+            struct dense_vector{};
+            struct uber_vector{};
+            template<typename Vector>
+            double one_norm(const Vector& A){...}
+        }
+    }
+
+    ADL 메커니즘은 인수의 타입 선언의 네임스페이스에서만 함수를 검색하고 각각의 상위 네임스페이스에서는 검색하지 않는다.
+    namespace rocketscience{
+        namespace mat{
+            struct sparse_matrix{};
+            struct dense_matrix{};
+            struct uber_matirx{};
+            template<typename matrix>
+            double one_norm(const Matrix& A){...}
+        }
+        namespace vec{
+            struct sparse_vector{};
+            struct dense_vector{};
+            struct uber_vector{};
+            
+        }
+        template<typename Vector>
+        double one_norm(const Vector& A){...}
+    }
+
+    int main() {
+        rocketscience::vec::uber_vector x;
+        double norm_x = one_norm(x); // 오류 : ADL을 통해 찾을 수 없다.
+    }
+
+    또한 다른 네임스페이스 안에 있는 이름을 가져올 때, 해당 네임스페이스의 함수는 ADL에 종속하지 않는다.
+    namespace rocketscience{
+        namespace mat{
+            struct sparse_matrix{};
+            struct dense_matrix{};
+            struct uber_matirx{};
+            template<typename matrix>
+            double one_norm(const Matrix& A){...}
+        }
+        namespace vec{
+            struct sparse_vector{};
+            struct dense_vector{};
+            struct uber_vector{};
+            
+        }
+        using vec::uber_vector; // 의미없다.
+        template<typename Vector>
+        double one_norm(const Vector& A){...}
+    }
+
+    int main() {
+        rocketscience::vec::uber_vector x;
+        double norm_x = one_norm(x); // 오류 : ADL을 통해 찾을 수 없다.
+    }
+    오버로드를 적절하게 선택하려고 ADL에 의존하는 것은 한계가 있고, 단일함수만 사용해 줄일 수 있으나 이도 완전하진 않다.
+    
+    인자가 여러 개인 함수를 사용할 때, 특히 매개변수 타입이 서로 다른 네임스페이스에서 비록된 경우 모호할 가능성이 더 높아진다.
+    namespace rocketscience{
+        namespace mat{
+            ...
+            template<typename Scalar, typename Matrix>
+            Matrix operator*(const Scalar& a, const Matrix& A){...}
+        }
+        namespace vec{
+            ...
+            template<typename Scalar, typename Vector>
+            Matrix operator*(const Scalar& a, const Vector& x){...}
+            template<typename Matrix, typename Vector>
+            Matrix operator*(const Matrix& A, const Vector& x){...}
+            
+        }
+        
+    }
+
+    int main() {
+        rocketscience::mat::uber_matrix A;
+        rocketscience::vec::uber_vector x, y;
+        y = A * x; // 어떤 오버로드를 선택해야 하는가 모호하다. 
+    }
+    컴파일러는 두 네임스페이스 모두 탐색하며, 세가지의 오버로드 모두 사용 가능하다... 그리고 우선순위도 없어서 망한다.
+
+    아쉽게도 명시적 템플릿 인스턴스화는 ADL에서 동작하지 않는다. 
+    함수 호출에서 템플릿 인수를 명시적으로 선언할 때마다 함수 이름은 인수의 네임스페이스에서 찾지 않는다.
+
+    요약하면 이렇다.
+    1. 네임스페이스 중첩 및 한정
+    2. 이름 숨김
+    3. ADL
+    4. 오버로드 판별
+*/
+
+/*
+    swap함수 템플릿의 구현 방식을 보자
+    template<typename T>
+    inline void swap(T& x, T& y){
+        T tmp(x); x = y; y = tmp;
+    }
+    이 방식은 1기가의 데이터를 옮기는데 3기가의 메모리를 필요로한다.
+    이런 비효율을 지우기 위해 class안에 inline-friend 자유함수를 선언한다. (클래스 안에 선언함으로 코드 길이를 훨씬 줄일 수 있다.)
+    template<typename Value>
+    class vector{
+        ...
+        friend inline void swap(vector& x, vector& y){
+            std::swap(x.my_size, y.my_size); std::swap(x.data, y.data);
+        }
+        private :
+            unsigned my_size;
+            Value *data;
+    }
+    만약 다음과 같이 제네릭 함수에서 매개변수 타입의 데이터를 교환해야한다고 가정하면 3기가의 데이터를 복사해야한다.
+    template<typename T, typename U>
+    inline void some_function(T& x, T& y, const U& z, int i){
+        ...
+        std::swap(x, y);    // 비용이 비쌀 수 있다.
+        ...
+    }
+    이 상황에서 using을 사용하면
+    template<typename T, typename U>
+    inline void some_function(T& x, T& y, const U& z, int i){
+        using std::swap;
+        ...
+        ::swap(x, y);    // ADL을 포함한다. => 클래스 내의 함수와 기본 함수 둘다 고려하나, 인수타입이 표준 구현보다 구체적이어서 클래스의 함수가 쓰인다.
+        ...
+    }
+    이를 통해 클래스 내에 구현한 포인터 교환을 사용할 수 있다.
+
+    물론 기본 swap구현은 C++11부터는 move를 통해 두 인수와 임시 변수 사이의 값을 이동하도록 구현한다.
+    template<typename T>
+    inline void swap(T& x, T& y){
+        T tmp(move(x));
+        x = move(y);
+        y - move(tmp);
+    }
+    사용자 정의로 구현한 swap이 없는 타입의 경우 빠른 이동 생성자 및 이동 할당 연산자를 제공하면 두 데이터를 효과적으로 바꿀 수 있다.
+    결과적으로 사용자 정의로 구현하지 않고, 이동 연산을 지원하지도 않는 타입만 복사된다.
+*/
+
 
 int main() {
     statistics::window win();
