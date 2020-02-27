@@ -246,26 +246,28 @@ inline T accumulate_array(T* a, T* a_end)
 template <typename Iter, typename T>
 inline T accumulate(Iter it, Iter end, T init)
 {
-    for (; it != end; ++it) 
-	init+= *it;
+    for (; it != end; ++it){
+        std::cout << "it is " << *it << std::endl;
+        init+= *it;
+    }
+	    
     return init;
 }
 /*
     이것은 다음과 같이 사용한다.
-    std::cout << "sum l is " << accumulate(l.begin(), l.end(), 0.0) << '\n';
+    std::cout << "sum l is " << accumulate(l.begin(), l.end(), 0.0) << '\n'; 
 
     위의 반복문에서는 사전 증가를 수행해야 entry멤버를 갱신하고 반복자를 가리키는 레버런스를 반환할 수 있다.
     만약 사후 증가를 사용하면 이전 값을 반환하고 다음번 반복자를 사용할 때 다음 리스트 요소를 참조하도록 내부 상태를 증가시킨다.
     이는 멤버 데이터를 변경하기 전에 반복자 전체를 복사하고 이 복사본을 반환할 때만 달성할 수 있다.
-
-    근데 이거 리스트가 중간에 비어있음 못쓰지 않나;;;?
 */
 
 
 
 int main() {
 
-
-
+    list<float>  l;
+    l.append(2.0f); l.append(4.0f); l.append(7.0f);// l.append(NULL); l.append(6.0f);
+    std::cout << "sum l is " << accumulate(l.begin(), l.end(), 0.0) << '\n';
     return 0;
 }
