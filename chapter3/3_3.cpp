@@ -270,4 +270,5 @@ int main() {
     l.append(2.0f); l.append(4.0f); l.append(7.0f);// l.append(NULL); l.append(6.0f);
     std::cout << "sum l is " << accumulate(l.begin(), l.end(), 0.0) << '\n';
     return 0;
+    
 }
