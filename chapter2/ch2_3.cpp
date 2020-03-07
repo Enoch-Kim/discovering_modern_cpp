@@ -359,7 +359,7 @@ int main() {
     1. 생성자와 복사할당연산자 각각 구현하는 방식
     class vector {
         //...
-        vector(std::initializer_list<double> values) : my_size(values.size(), data(new double[my_size]){
+        vector(std::initializer_list<double> values) : my_size(values.size()), data(new double[my_size]){
             std::copy(std::begin(values), std::end(values), std::begin(data));
         }
 
