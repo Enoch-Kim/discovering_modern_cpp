@@ -65,8 +65,6 @@ std::string to_tuple_string(P ...p) {
 };
 
 // Q3
-
-
 template <typename StackType>
 class GenericStack {    // top pop push, clear, size, full, empty
     public :
@@ -83,11 +81,6 @@ class GenericStack {    // top pop push, clear, size, full, empty
             assert(capacity >= values.size());
             std::copy(std::begin(values), std::end(values), stack);
             return *this;
-        }
-
-        StackType operator[](int i) {
-            assert(i <= stackSize);
-            return stack[i];
         }
 
         ~GenericStack(){
@@ -118,7 +111,7 @@ class GenericStack {    // top pop push, clear, size, full, empty
 
         void pop() {
             if(stackSize == 0) return;
-            stack[stackSize - 1] = NULL;
+            stack[stackSize - 1] = 0;
             --stackSize;
         }
 
@@ -140,7 +133,6 @@ class GenericStack {    // top pop push, clear, size, full, empty
         StackType                       *stack;    // unique_ptr 쓰고싶지만... copy가 안돼서 못쓴다.
 };
 
-
 template <typename T>
 class Stack{
     public :
@@ -150,6 +142,11 @@ class Stack{
             delete data;
         }
 
+        Stack operator=(T newData){
+            data = newData;
+            return *this;
+        }
+
         T get() {
             return data;
         }
@@ -157,6 +154,78 @@ class Stack{
     private :
         T data;
 };
+
+
+// class GenericStack1 {    // top pop push, clear, size, full, empty
+//     public :
+        
+//         GenericStack1() : capacity(10), stackSize(0), stack() {}
+        
+//         GenericStack1(int capacity) : capacity(capacity) ,stack(), stackSize(0) {}
+
+//         template <typename ...StackType>
+//         GenericStack1(StackType ...values) : capacity(sizeof...(StackType)), stackSize(capacity), stack(new Stack<StackType...>[capacity]){
+//             push(values...);
+//         }
+
+//         ~GenericStack1(){
+//             for(int i=0; i < stackSize; ++i)
+//                 delete stack[i];
+//         }
+
+//         void resize(int size) {
+//             capacity = size;
+//         }
+
+//         int size () {
+//             return stackSize;
+//         }
+
+//         bool full () {
+//             return capacity == stackSize;
+//         }
+
+//         bool empty() {
+//             return stackSize == 0;
+//         }
+
+
+//         auto top() {
+//             assert(stackSize);
+//             return stack[stackSize - 1] -> get();
+//         }
+
+//         void pop() {
+//             if(stackSize == 0) return;
+//             delete stack[stackSize-1];
+//             stack[stackSize - 1] = NULL;
+//             --stackSize;
+//         }
+//         template<typename D>
+//         void push( D data) {
+//             assert(!full());
+//             stack[stackSize] = new Stack<D>(data);
+//             ++stackSize;
+            
+//         }
+
+//         void clear() {
+//             for(int i=0; i < stackSize; ++i){
+//                 delete stack[i];
+//                 stack[i] = NULL;
+//             }
+//             stackSize = 0;
+//         }        
+
+//     private :
+//         int                              capacity;
+//         int                             stackSize;
+//         std::unique_ptr<Stack<StackType>>  *stack;    // unique_ptr 쓰고싶지만... copy가 안돼서 못쓴다.
+        
+// };
+
+// 파이썬처럼 여러 타입을 받는 템플릿은 실패 ex {3.0 , 5, false, "fine"}
+
 
 
 int main() {
@@ -190,6 +259,7 @@ int main() {
     myStack.push(8.44);
     myStack2.push(true);
     myStack.push(10.3);
+    // myStack2.push(7.7); -> type conversion occur
     cout << "after myStack's push is " << myStack.top() << '\n';
     cout << "after myStack2's push is " << myStack2.top() << '\n';
     cout << "myStack's size is " << myStack.size() << '\n';
@@ -198,6 +268,26 @@ int main() {
     myStack2.clear();
     cout << "after myStack's clear size is " << myStack.size() << '\n';
     cout << "after myStack2's clear size is " << myStack2.size() << '\n';
+    // cout << "after myStack2's clear top is" << myStack2.top(); assertion fail good
+
+
+    GenericStack1 myStack3{3.0, true, 5};
+    
+    myStack3.resize(10);
+    
+    cout << "myStack's size is " << myStack3.size() << '\n';
+    cout << "myStack's top is " << myStack3.top() << '\n';
+    myStack3.pop();
+    cout << "after myStack's pop is " << myStack3.top() << '\n';
+    myStack3.push('c');
+    cout << "after myStack3's push is " << myStack3.top() << '\n';
+    myStack2.push("dcj");
+    cout << "after myStack3's push is " << myStack3.top() << '\n';
+    myStack.push(10.3);
+    cout << "after myStack3's push is " << myStack3.top() << '\n';
+    cout << "myStack3's size is " << myStack.size() << '\n';
+    myStack3.clear();
+    cout << "after myStack3's clear size is " << myStack3.size() << '\n';
     // cout << "after myStack2's clear top is" << myStack2.top(); assertion fail good
     
     

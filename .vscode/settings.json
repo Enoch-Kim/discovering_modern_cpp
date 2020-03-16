@@ -68,6 +68,10 @@
         "code-runner.executorMap": {
             "cpp": "cd $dir && g++ -std=c++11 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
         },
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "map": "cpp",
+        "__tree": "cpp",
+        "__memory": "cpp",
+        "filesystem": "cpp"
     }
 }
