@@ -271,24 +271,24 @@ int main() {
     // cout << "after myStack2's clear top is" << myStack2.top(); assertion fail good
 
 
-    GenericStack1 myStack3{3.0, true, 5};
+    // GenericStack1 myStack3{3.0, true, 5};
     
-    myStack3.resize(10);
+    // myStack3.resize(10);
     
-    cout << "myStack's size is " << myStack3.size() << '\n';
-    cout << "myStack's top is " << myStack3.top() << '\n';
-    myStack3.pop();
-    cout << "after myStack's pop is " << myStack3.top() << '\n';
-    myStack3.push('c');
-    cout << "after myStack3's push is " << myStack3.top() << '\n';
-    myStack2.push("dcj");
-    cout << "after myStack3's push is " << myStack3.top() << '\n';
-    myStack.push(10.3);
-    cout << "after myStack3's push is " << myStack3.top() << '\n';
-    cout << "myStack3's size is " << myStack.size() << '\n';
-    myStack3.clear();
-    cout << "after myStack3's clear size is " << myStack3.size() << '\n';
-    // cout << "after myStack2's clear top is" << myStack2.top(); assertion fail good
+    // cout << "myStack's size is " << myStack3.size() << '\n';
+    // cout << "myStack's top is " << myStack3.top() << '\n';
+    // myStack3.pop();
+    // cout << "after myStack's pop is " << myStack3.top() << '\n';
+    // myStack3.push('c');
+    // cout << "after myStack3's push is " << myStack3.top() << '\n';
+    // myStack2.push("dcj");
+    // cout << "after myStack3's push is " << myStack3.top() << '\n';
+    // myStack.push(10.3);
+    // cout << "after myStack3's push is " << myStack3.top() << '\n';
+    // cout << "myStack3's size is " << myStack.size() << '\n';
+    // myStack3.clear();
+    // cout << "after myStack3's clear size is " << myStack3.size() << '\n';
+    // // cout << "after myStack2's clear top is" << myStack2.top(); assertion fail good
     
     
 
