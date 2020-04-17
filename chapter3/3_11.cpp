@@ -13,7 +13,6 @@
 #include <memory>
 #include <initializer_list>
 
-
 // Q1
 class testClass {
     public :

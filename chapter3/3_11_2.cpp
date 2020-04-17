@@ -4,14 +4,7 @@
     3.11 연습문제 4 ~
 */
 
-#include <cassert>
-#include <iostream>
-#include <cmath>
-#include <algorithm>
-#include <string>
-#include <sstream>
-#include <memory>
-#include <initializer_list>
+#include <bits/stdc++.h>
 
 // Q4
 template <typename T>
@@ -35,6 +28,7 @@ struct vector_iterator{
     T& operator*() { return *data; }
     const T& operator*() const { return *data; }
     vector_iterator<T> operator++() { data += 1; return *this; }
+    vector_iterator<T> operator--() { data -= 1; return *this; }
     bool operator!=(const vector_iterator<T>& other) const { return data != other.data; }
     
     T* data;
@@ -140,6 +134,7 @@ int main () {
     v.push_back(1.0);
     v.push_back(2.0);
     v.push_back(-3.0);
+    sort(v.begin(), v.end());
     vector<float> v1(v);
     vector<float> v3(3);
     v3 = v1;
@@ -147,6 +142,6 @@ int main () {
     std::cout << "v is " << v << '\n';
     std::cout << "v1 is " << v1 << '\n';
     std::cout << "v3 is " << v3 << '\n';
-    std::cout << "v3 is " << v3 << '\n';\
+    std::cout << "v3 is " << v3 << '\n';
     return 0;
 }
