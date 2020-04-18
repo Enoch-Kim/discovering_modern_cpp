@@ -82,5 +82,4 @@ int main() {
     time_point<system_clock> now = system_clock::now(), then = now + hours(2);
     time_t then_time = system_clock::to_time_t(then);
     cout << "Darling, I'll be with you at " << ctime(&then_time);
-
 }
